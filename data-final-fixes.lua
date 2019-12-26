@@ -4,7 +4,13 @@ require("lib.recipe")
 
 local empty_barrel_name = "empty-barrel"
 local max_recipe_factor = 10
+local no_empty_barrels = settings.startup["no-empty-barrels"] ~= nil and settings.startup["no-empty-barrels"].value == true
 local keep_fluid_water = settings.startup["keep-fluid-water"] ~= nil and settings.startup["keep-fluid-water"].value == true
+
+local function is_barrel_recipe(recipe)
+    return recipe.category == "crafting-with-fluid" and
+        (recipe.subgroup == "fill-barrel" or recipe.subgroup == "empty-barrel")
+end
 
 -- Get the fluid name, fluid amount produced by an "empty" barrel recipe, and the ingredient name used by the recipe.
 local function get_barrel_recipe_fluid(recipe)
@@ -75,11 +81,6 @@ local function get_barrel_recipe_fluid(recipe)
     end
 
     return fluid_name, fluid_amount, ingredient_name
-end
-
-local function is_barrel_recipe(recipe)
-    return recipe.category == "crafting-with-fluid" and
-        (recipe.subgroup == "fill-barrel" or recipe.subgroup == "empty-barrel")
 end
 
 local function is_valid_barrelable_recipe(recipe)
@@ -229,7 +230,7 @@ local function create_barrel_recipe(recipe, factor, barreled_fluids)
         end
     end
 
-    if empty_barrel_results > 0 then
+    if empty_barrel_results > 0 and not no_empty_barrels then
         table.insert(
             barrel_recipe.results,
             {
@@ -324,12 +325,56 @@ local function add_recipes_to_technology(recipe_to_barreled)
     end
 end
 
+local function remove_empty_barrels_from_recipes()
+    for _, recipe in pairs(data.raw["recipe"]) do
+        if is_barrel_recipe(recipe) and recipe.results ~= nil then
+
+            local has_ingredient = false
+            local has_result = false
+
+            -- Remove empty barrels from ingredients
+            local new_ingredients = {}
+            for _, ingredient in pairs(recipe.ingredients) do
+                if (ingredient[1] or ingredient.name) ~= empty_barrel_name then
+                    table.insert(new_ingredients, ingredient)
+                    has_ingredient = true
+                end
+            end
+
+            -- Remove empty barrels from results
+            local new_results = {}
+            for _, result in pairs(recipe.results) do
+                if (result[1] or result.name) ~= empty_barrel_name then
+                    table.insert(new_results, result)
+                    has_result = true
+                end
+            end
+
+            if not has_ingredient then
+                log_mod("Skipping removing barrels from recipe " .. recipe.name .. " since it would have no ingredients")
+            elseif not has_result then
+                log_mod("Skipping removing barrels from recipe " .. recipe.name .. " since it would have no results")
+            else
+                recipe.always_show_products = true
+                recipe.show_amount_in_title = false
+                recipe.ingredients = new_ingredients
+                recipe.results = new_results
+            end
+
+        end
+    end
+end
+
 local function main()
     local barreled_recipes, recipe_to_barreled = process_barrel_recipes()
 
     data:extend(barreled_recipes)
 
     add_recipes_to_technology(recipe_to_barreled)
+
+    if no_empty_barrels == true then
+        remove_empty_barrels_from_recipes()
+    end
 end
 
 main()
