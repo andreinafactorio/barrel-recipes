@@ -146,6 +146,8 @@ local function create_barrel_recipe(recipe, factor, barreled_fluids)
     barrel_recipe.name = "barreled-recipe-" .. barrel_recipe.name
     barrel_recipe.energy_required = (barrel_recipe.energy_required or 0.5) * factor
     barrel_recipe.hide_from_player_crafting = true
+    barrel_recipe.always_show_products = true
+    barrel_recipe.show_amount_in_title = false
 
     barrel_recipe.localised_name = {
         "recipe-name.barrelled",
