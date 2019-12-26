@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: 2019-12-26
+  Features:
+    - Add setting to keep water as a fluid in recipes (you can get water anywhere after all).
+    - Add setting to remove empty barrels from recipes (inspired by NoEmptyBarrels mod).
+  Bugfixes:
+    - Fix icon on recipe proto should be used if available.
+    - Fix localized name incorrect for item sub-prototypes (i.e. ammo and capsules).
+    - Change barreled recipes to always show products, as some mods hide the result amount from the recipe title.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 2019-12-25
   - First release
