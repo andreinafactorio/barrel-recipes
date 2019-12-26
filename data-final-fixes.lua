@@ -4,6 +4,7 @@ require("lib.recipe")
 
 local empty_barrel_name = "empty-barrel"
 local max_recipe_factor = 10
+local keep_fluid_water = settings.startup["keep-fluid-water"] ~= nil and settings.startup["keep-fluid-water"].value == true
 
 -- Get the fluid name, fluid amount produced by an "empty" barrel recipe, and the ingredient name used by the recipe.
 local function get_barrel_recipe_fluid(recipe)
@@ -96,7 +97,7 @@ end
 
 local function is_valid_fluid_ingredient(ingredient)
     return ingredient.type == "fluid" and ingredient.temperature == nil and ingredient.minimum_temperature == nil and
-        ingredient.maximum_temperature == nil
+        ingredient.maximum_temperature == nil and not (ingredient.name == "water" and keep_fluid_water)
 end
 
 local function get_recipe_factor(recipe, barreled_fluids)
