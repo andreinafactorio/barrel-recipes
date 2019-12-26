@@ -104,13 +104,16 @@ function get_recipe_localised_name(recipe)
 
         local result_proto = nil
         if result_type == nil then
+            result_type = "item"
             result_proto = find_item_proto(result_name)
         else
             result_proto = find_proto(result_type, result_name)
         end
 
         if result_proto ~= nil then
-            result_type = result_proto.type
+            if result_type == nil then
+                result_type = result_proto.type
+            end
 
             -- Use the result's localisation, if available.
             if result_proto.localised_name ~= nil then
