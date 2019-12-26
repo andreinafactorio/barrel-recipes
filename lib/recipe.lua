@@ -169,6 +169,11 @@ function get_recipe_order(recipe)
 end
 
 function get_recipe_icons(recipe)
+    local recipe_icons = get_proto_icons(recipe)
+    if (recipe_icons ~= nil) then
+        return recipe_icons
+    end
+
     -- Not supporting main_product for single result since I'm not clear on how to use it.
     if not recipe_has_multiple_results(recipe) then
         local result_type, result_name = get_recipe_main_result(recipe)
@@ -209,7 +214,7 @@ function get_recipe_icons(recipe)
         end
     end
 
-    return get_proto_icons(recipe)
+    return nil
 end
 
 function get_recipe_subgroup(recipe)
