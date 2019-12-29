@@ -368,9 +368,10 @@ end
 local function main()
     local barreled_recipes, recipe_to_barreled = process_barrel_recipes()
 
-    data:extend(barreled_recipes)
-
-    add_recipes_to_technology(recipe_to_barreled)
+    if #barreled_recipes ~= 0 then
+        data:extend(barreled_recipes)
+        add_recipes_to_technology(recipe_to_barreled)
+    end
 
     if no_empty_barrels == true then
         remove_empty_barrels_from_recipes()
