@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.1
+Date: 2019-12-29
+  Changes:
+    - Add messages to let user know how many recipes were added.
+  Bugfixes:
+    - Fix error when mod doesn't create any barrelable recipes.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.0
 Date: 2019-12-26
   Features:
