@@ -226,7 +226,7 @@ local function create_barrel_recipe(recipe, factor, barreled_fluids)
         end
 
         if result.type then
-            result.amount = result.amount * factor
+            result.amount = (result.amount or 1) * factor
         else
             result[2] = (result[2] or 1) * factor
         end
