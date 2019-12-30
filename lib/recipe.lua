@@ -194,20 +194,20 @@ function get_recipe_icons(recipe)
         end
 
         if result_proto ~= nil then
-            result_type = result_proto.type
+            -- Use the recipe result's icons, if available.
+            local result_icons = get_proto_icons(result_proto)
+            if (result_icons ~= nil) then
+                return result_icons
+            end
 
-            -- Use the result's localisation, if available.
-            if result_proto.localised_name ~= nil then
-                return result_proto.localised_name
-
-            elseif result_proto.place_result ~= nil then
-                result_type = "entity"
-                result_name = result_proto.place_result
-
-                -- Use the entity's localisation, if available.
+           if result_proto.place_result ~= nil then
+                -- Use the entity's icons, if available.
                 local entity_proto = find_proto("entity", result_proto.place_result)
-                if entity_proto ~= nil and entity_proto.localised_name ~= nil then
-                    return entity_proto.localised_name
+                if entity_proto ~= nil then
+                    local entity_icons = get_proto_icons(entity_proto)
+                    if (entity_icons ~= nil) then
+                        return entity_icons
+                    end
                 end
             end
         end
