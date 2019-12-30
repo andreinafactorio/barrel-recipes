@@ -269,6 +269,7 @@ local function get_barreled_fluids(recipes)
                     if barreled_fluids[fluid_name].amount ~= fluid_amount then
                         barreled_fluids[fluid_name] = nil
                         invalid_fluids[fluid_name] = true
+                        log_mod("Found invalid empty barrel recipe " .. recipe.name .. " for fluid " .. fluid_name .. " x " .. fluid_amount)
                     end
                 else
                     barreled_fluids[fluid_name] = {
@@ -371,7 +372,10 @@ local function main()
     local barreled_recipes, recipe_to_barreled = process_barrel_recipes()
 
     if #barreled_recipes ~= 0 then
+        log_mod("Loading recipes")
         data:extend(barreled_recipes)
+
+        log_mod("Add recipes to technology")
         add_recipes_to_technology(recipe_to_barreled)
     end
 
