@@ -8,8 +8,7 @@ local no_empty_barrels = settings.startup["no-empty-barrels"] ~= nil and setting
 local keep_fluid_water = settings.startup["keep-fluid-water"] ~= nil and settings.startup["keep-fluid-water"].value == true
 
 local function is_barrel_recipe(recipe)
-    return recipe.category == "crafting-with-fluid" and
-        (recipe.subgroup == "fill-barrel" or recipe.subgroup == "empty-barrel")
+    return recipe.subgroup == "fill-barrel" or recipe.subgroup == "empty-barrel"
 end
 
 -- Get the fluid name, fluid amount produced by an "empty" barrel recipe, and the ingredient name used by the recipe.
@@ -245,7 +244,7 @@ local function create_barrel_recipe(recipe, factor, barreled_fluids)
 end
 
 local function is_empty_barrel_recipe(recipe)
-    return recipe.category == "crafting-with-fluid" and recipe.subgroup == "empty-barrel"
+    return recipe.subgroup == "empty-barrel"
 end
 
 local function get_barreled_fluids(recipes)
