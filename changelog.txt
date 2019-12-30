@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.2
+Date: 2019-12-30
+  Bugfixes:
+    - Fix modded fluids not detected as valid
+    - Fix error with missing icon_size prop
+    - Fix error when result amount is missing
+---------------------------------------------------------------------------------------------------
 Version: 1.1.1
 Date: 2019-12-29
   Changes:
