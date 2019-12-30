@@ -173,6 +173,9 @@ local function create_barrel_recipe(recipe, factor, barreled_fluids)
         }
     )
 
+    barrel_recipe.icon = nil
+    barrel_recipe.icon_size = 32
+
     barrel_recipe.subgroup = get_recipe_subgroup(recipe)
     if not barrel_recipe.subgroup then
         log_mod("Skipping since could not determine subgroup for recipe " .. recipe.name)
