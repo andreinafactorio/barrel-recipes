@@ -154,15 +154,30 @@ local function create_barrel_recipe(recipe, factor, barreled_fluids)
         get_recipe_localised_name(recipe)
     }
 
-    barrel_recipe.icons = get_recipe_icons(recipe)
-    if not barrel_recipe.icons then
+    local original_icons = get_recipe_icons(recipe)
+    if not original_icons then
         log_mod("Skipping since could not determine icons for recipe " .. recipe.name)
         return nil
     end
 
-    -- Deep copy the icons (in case they are from a different prototype)
-    -- and add the barrel icon to it.
-    barrel_recipe.icons = util.table.deepcopy(barrel_recipe.icons)
+    barrel_recipe.icons = {}
+    barrel_recipe.icon = nil
+    barrel_recipe.icon_size = nil
+
+    for icon_idx, icon_data in pairs(original_icons) do
+        if icon_data ~= nil and type(icon_data) == "table" and icon_data.icon ~= nil then
+            local icon = util.table.deepcopy(icon_data)
+
+            if icon.icon_size == nil then
+                icon.icon_size = 32
+            end
+
+            table.insert(barrel_recipe.icons, icon)
+        else
+            log_mod("Invalid icon found for recipe " .. recipe.name .. " idx:" .. icon_idx)
+        end
+    end
+
     table.insert(
         barrel_recipe.icons,
         {
@@ -173,8 +188,6 @@ local function create_barrel_recipe(recipe, factor, barreled_fluids)
         }
     )
 
-    barrel_recipe.icon = nil
-    barrel_recipe.icon_size = 32
 
     barrel_recipe.subgroup = get_recipe_subgroup(recipe)
     if not barrel_recipe.subgroup then
